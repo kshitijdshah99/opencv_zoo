@@ -122,8 +122,8 @@ datasets = dict(
         mini_supervisely=dict(
             name="MiniSupervisely",
             topic="human_segmentation"),
-       ppocrv3=dict(
-            name="PPoCRv3",
+       td500=dict(
+            name="TD500",
             topic="text_detection"),
         
 )
