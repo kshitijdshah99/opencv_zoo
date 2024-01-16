@@ -104,7 +104,7 @@ def evaluation_text(pred, gt_path, iou_thresh=0.5):
 
     return aps
 
-class TextDetectionDataset:
+class TD500:
     def __init__(self, root, split='test'):
         self.aps = []
         self.msra_root = root
