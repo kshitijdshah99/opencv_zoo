@@ -7,18 +7,16 @@ import cv2 as cv
 
 def get_gt_boxes_text(gt_dir):
     gt_files = [f for f in os.listdir(gt_dir) if f.endswith('.txt')]
-    
     gt_boxes_list = []
+
     for gt_file in sorted(gt_files):
         with open(os.path.join(gt_dir, gt_file), 'r') as file:
             boxes = []
-            lines = file.readlines()
-            for line in lines:
-                values = line.strip().split(',')
-                box = [float(value) for value in values]
+            for line in file:
+                box = [float(coord) for coord in line.strip().split()]
                 boxes.append(box)
             gt_boxes_list.append(boxes)
-    
+
     return gt_boxes_list
 
 def norm_score_text(pred):
