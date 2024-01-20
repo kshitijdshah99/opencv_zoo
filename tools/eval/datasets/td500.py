@@ -25,6 +25,24 @@ def get_gt_boxes_text(gt_dir):
 
     return gt_boxes
 
+def norm_score_text(pred):
+    max_score = 0
+    min_score = 1
+
+    for _, v in pred.items():
+        if len(v) == 0:
+            continue
+        _min = np.min(v[:, -1])
+        _max = np.max(v[:, -1])
+        max_score = max(_max, max_score)
+        min_score = min(_min, min_score)
+
+    diff = max_score - min_score
+    for _, v in pred.items():
+        if len(v) == 0:
+            continue
+        v[:, -1] = (v[:, -1] - min_score) / diff
+
 def evaluation_text(pred, gt_path, iou_thresh=0.5):
     norm_score_text(pred)
 
@@ -64,6 +82,7 @@ def evaluation_text(pred, gt_path, iou_thresh=0.5):
         aps.append(ap)
 
     return aps
+
 
 # The rest of the code remains unchanged
 class TD500:
