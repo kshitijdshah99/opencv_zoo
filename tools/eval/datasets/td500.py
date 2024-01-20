@@ -6,21 +6,20 @@ from scipy.io import loadmat
 import cv2 as cv
 
 def get_gt_boxes_text(gt_dir):
-    gt_file = os.path.join(gt_dir, 'gt.mat')
-
-    try:
-        gt_mat = loadmat(gt_file)
-    except FileNotFoundError:
-        print(f"Warning: 'gt.mat' not found in {gt_dir}. Returning empty list.")
-        return []
-
     gt_boxes = []
-    for i in range(len(gt_mat['gt'][0])):
-        img_gt = gt_mat['gt'][0][i][0][0][0][0]
+    gt_files = [f for f in os.listdir(gt_dir) if f.endswith('.txt')]
+
+    for gt_file in gt_files:
+        file_path = os.path.join(gt_dir, gt_file)
         boxes = []
-        for j in range(len(img_gt)):
-            box = img_gt[j][0][0][0][0][0]
-            boxes.append([float(box[0]), float(box[1]), float(box[2]), float(box[3])])
+        
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+            for line in lines:
+                values = line.strip().split(',')
+                box = [float(val) for val in values[:4]]
+                boxes.append(box)
+
         gt_boxes.append(boxes)
 
     return gt_boxes
