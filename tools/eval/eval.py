@@ -101,7 +101,7 @@ models = dict(
         modelPath=os.path.join(root_dir, "models/text_detection_ppocr/text_detection_en_ppocrv3_2023may_int8.onnx")),
 )
     
-)
+
 
 datasets = dict(
         imagenet=dict(
