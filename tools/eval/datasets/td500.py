@@ -5,22 +5,25 @@ import numpy as np
 from scipy.io import loadmat
 import cv2 as cv
 
-def get_gt_boxes_text(gt_dir):
-    gt_files = [f for f in os.listdir(gt_dir) if f.endswith('.gt')]
+def get_gt_boxes_text(img_dir):
+    img_files = [f for f in os.listdir(img_dir) if f.endswith('.jpg')]
     gt_boxes = []
 
-    for gt_file in gt_files:
-        gt_path = os.path.join(gt_dir, gt_file)
-        with open(gt_path, 'r') as file:
-            lines = file.readlines()
-            boxes = []
+    for img_file in img_files:
+        img_path = os.path.join(img_dir, img_file)
+        gt_path = os.path.splitext(img_path)[0] + '.gt'
+        
+        if os.path.exists(gt_path):
+            with open(gt_path, 'r') as file:
+                lines = file.readlines()
+                boxes = []
 
-            for line in lines:
-                parts = line.strip().split(',')
-                box = [float(parts[0]), float(parts[1]), float(parts[2]), float(parts[3])]
-                boxes.append(box)
+                for line in lines:
+                    parts = line.strip().split(',')
+                    box = [float(parts[0]), float(parts[1]), float(parts[2]), float(parts[3])]
+                    boxes.append(box)
 
-            gt_boxes.append(boxes)
+                gt_boxes.append(boxes)
 
     return gt_boxes
 
