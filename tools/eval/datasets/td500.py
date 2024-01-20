@@ -7,17 +7,23 @@ import cv2 as cv
 
 def get_gt_boxes_text(gt_dir):
     gt_files = [f for f in os.listdir(gt_dir) if f.endswith('.gt')]
-    gt_boxes_list = []
+    gt_boxes = []
 
-    for gt_file in sorted(gt_files):
-        with open(os.path.join(gt_dir, gt_file), 'r') as file:
+    for gt_file in gt_files:
+        gt_path = os.path.join(gt_dir, gt_file)
+        with open(gt_path, 'r') as file:
+            lines = file.readlines()
             boxes = []
-            for line in file:
-                box = [float(coord) for coord in line.strip().split()]
-                boxes.append(box)
-            gt_boxes_list.append(boxes)
 
-    return gt_boxes_list
+            for line in lines:
+                parts = line.strip().split(',')
+                box = [float(parts[0]), float(parts[1]), float(parts[2]), float(parts[3])]
+                boxes.append(box)
+
+            gt_boxes.append(boxes)
+
+    return gt_boxes
+
 
 def norm_score_text(pred):
     max_score = 0
@@ -86,10 +92,11 @@ class TD500:
         self._split = split
 
         self.msra_img_paths = {
-            'test': os.path.join(self.msra_root, 'MSRA-TD500', 'test')
+            'test': os.path.join(self.msra_root, 'MSRA-TD500', 'test'),
+            'train': os.path.join(self.msra_root, 'MSRA-TD500', 'train')
         }
 
-        self.gt_path = os.path.join(self.msra_root, 'gt')
+        self.gt_path = os.path.join(self.msra_root, 'MSRA-TD500', self._split)  # Updated path
 
         self.img_list, self.num_img = self.load_list()
 
