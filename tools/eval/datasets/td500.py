@@ -6,7 +6,7 @@ from scipy.io import loadmat
 import cv2 as cv
 
 def get_gt_boxes_text(gt_dir):
-    gt_files = [f for f in os.listdir(gt_dir) if f.endswith('.txt')]
+    gt_files = [f for f in os.listdir(gt_dir) if f.endswith('.gt')]
     gt_boxes_list = []
 
     for gt_file in sorted(gt_files):
