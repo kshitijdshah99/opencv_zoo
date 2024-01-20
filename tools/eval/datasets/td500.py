@@ -6,23 +6,20 @@ from scipy.io import loadmat
 import cv2 as cv
 
 def get_gt_boxes_text(gt_dir):
-    gt_boxes = []
     gt_files = [f for f in os.listdir(gt_dir) if f.endswith('.txt')]
-
-    for gt_file in gt_files:
-        file_path = os.path.join(gt_dir, gt_file)
-        boxes = []
-        
-        with open(file_path, 'r') as f:
-            lines = f.readlines()
+    
+    gt_boxes_list = []
+    for gt_file in sorted(gt_files):
+        with open(os.path.join(gt_dir, gt_file), 'r') as file:
+            boxes = []
+            lines = file.readlines()
             for line in lines:
                 values = line.strip().split(',')
-                box = [float(val) for val in values[:4]]
+                box = [float(value) for value in values]
                 boxes.append(box)
-
-        gt_boxes.append(boxes)
-
-    return gt_boxes
+            gt_boxes_list.append(boxes)
+    
+    return gt_boxes_list
 
 def norm_score_text(pred):
     max_score = 0
