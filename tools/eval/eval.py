@@ -95,6 +95,7 @@ models = dict(
         name="PPHumanSeg",
         topic="human_segmentation",
         modelPath=os.path.join(root_dir, "models/human_segmentation_pphumanseg/human_segmentation_pphumanseg_2023mar_int8.onnx")),
+    
 )
 
 datasets = dict(
@@ -118,6 +119,9 @@ datasets = dict(
         mini_supervisely=dict(
             name="MiniSupervisely",
             topic="human_segmentation"),
+        td500=dict(
+            name="TD500",
+            topic="text_detection"),
 )
 
 def main(args):
