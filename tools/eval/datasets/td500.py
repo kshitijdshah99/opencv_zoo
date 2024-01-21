@@ -93,7 +93,7 @@ class TD500:
         self.msra_root = root
         self._split = split
 
-        self.msra_img_path = os.path.join(self.msra_root, 'MSRA-TD500', self._split)
+        self.msra_img_path = os.path.join(self.msra_root, 'MSRA-TD500', self._split.lower())
 
         self.img_list, self.num_img = self.load_list()
 
