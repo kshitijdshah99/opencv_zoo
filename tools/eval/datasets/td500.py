@@ -93,9 +93,7 @@ class TD500:
         self.msra_root = root
         self._split = split
 
-        self.msra_img_paths = {
-            'test': os.path.join(self.msra_root, 'MSRA-TD500', 'test')
-        }
+        self.msra_img_path = os.path.join(self.msra_root, 'MSRA-TD500', self._split)
 
         self.img_list, self.num_img = self.load_list()
 
@@ -103,14 +101,17 @@ class TD500:
         n_imgs = 0
         flist = []
 
-        img_path = self.msra_img_paths[self._split]
+        img_path = self.msra_img_path
 
-        img_files = [f for f in os.listdir(img_path) if f.endswith('.jpg')]
+        if os.path.exists(img_path):
+            img_files = [f for f in os.listdir(img_path) if f.endswith('.jpg')]
 
-        for img_file in img_files:
-            img_file_path = os.path.join(img_path, img_file)
-            flist.append((img_file_path, None))
-            n_imgs += 1
+            for img_file in img_files:
+                img_file_path = os.path.join(img_path, img_file)
+                flist.append((img_file_path, None))
+                n_imgs += 1
+        else:
+            print(f"No such directory: {img_path}")
 
         return flist, n_imgs
 
@@ -139,7 +140,7 @@ class TD500:
 
             results_list[str(len(results_list))][str(len(results_list) + 1)] = det
 
-        self.aps = evaluation_text(results_list, os.path.join(self.msra_root, 'gt'))
+        self.aps = evaluation_text(results_list, self.msra_img_path)
 
     def print_result(self):
         print("==================== Results ====================")
