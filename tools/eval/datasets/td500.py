@@ -97,7 +97,7 @@ class TD500:
 
         self.img_list, self.num_img = self.load_list()
 
-     def load_list(self):
+    def load_list(self):
         n_imgs = 0
         flist = []
 
