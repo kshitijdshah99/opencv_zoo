@@ -97,7 +97,7 @@ class TD500:
 
         self.img_list, self.num_img = self.load_list()
 
-    def load_list(self):
+     def load_list(self):
         n_imgs = 0
         flist = []
 
@@ -108,8 +108,7 @@ class TD500:
 
             for img_file in img_files:
                 img_file_path = os.path.join(img_path, img_file)
-                gt_file_path = os.path.join(img_path, os.path.splitext(img_file)[0] + '.gt')
-                flist.append((img_file_path, gt_file_path))
+                flist.append(img_file_path)
                 n_imgs += 1
         else:
             print(f"No such directory: {img_path}")
@@ -117,8 +116,9 @@ class TD500:
         return flist, n_imgs
 
     def __getitem__(self, index):
-        img_file, gt_file = self.img_list[index]
+        img_file = self.img_list[index]
         img = cv.imread(img_file)
+        gt_file = os.path.join(self.msra_img_path, os.path.splitext(os.path.basename(img_file))[0] + '.gt')
         gt_boxes = get_gt_boxes_text(gt_file)
         return gt_boxes, img
 
