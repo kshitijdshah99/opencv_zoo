@@ -93,7 +93,7 @@ class TD500:
         self.msra_root = root
         self._split = split
 
-        self.msra_img_path = os.path.join(self.msra_root, 'MSRA-TD500', self._split,'img')  #
+        self.msra_img_path = os.path.join(self.msra_root, 'MSRA-TD500', self._split)
 
         self.img_list, self.num_img = self.load_list()
 
@@ -108,7 +108,8 @@ class TD500:
 
             for img_file in img_files:
                 img_file_path = os.path.join(img_path, img_file)
-                flist.append((img_file_path, None))
+                gt_file_path = os.path.join(img_path, os.path.splitext(img_file)[0] + '.gt')
+                flist.append((img_file_path, gt_file_path))
                 n_imgs += 1
         else:
             print(f"No such directory: {img_path}")
@@ -116,15 +117,15 @@ class TD500:
         return flist, n_imgs
 
     def __getitem__(self, index):
-        img_file, _ = self.img_list[index]
+        img_file, gt_file = self.img_list[index]
         img = cv.imread(img_file)
-        gt_boxes = get_gt_boxes_text(os.path.splitext(img_file)[0])
+        gt_boxes = get_gt_boxes_text(gt_file)
         return gt_boxes, img
 
     def eval(self, model):
         results_list = dict()
         pbar = tqdm.tqdm(self)
-        pbar.set_description_str("Evaluating {} with {} test set".format(model.name, self._split))
+        pbar.set_description_str("Evaluating {} with {} set".format(model.name, self._split))
         for gt_boxes, img in pbar:
             img_shape = [img.shape[1], img.shape[0]]
             model.setInputSize(img_shape)
