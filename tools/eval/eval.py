@@ -98,7 +98,7 @@ models = dict(
     ppocrdet=dict(
         name="PPOCRDet",
         topic="text_detection",
-        modelPath=os.path.join(root_dir, "models/text_detection_ppocr/text_detection_en_ppocrv3_2023may_int8.onnx")),
+        modelPath=os.path.join(root_dir, "models/text_detection_ppocr/text_detection_cn_ppocrv3_2023may_int8.onnx")),
 )
     
 
